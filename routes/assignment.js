@@ -1,0 +1,15 @@
+const express=require("express")
+const Router =express.Router()
+const assignmentcontrolle=require("../controllers/assignment")
+const {verifytoken}=require("../middleware/jwt")
+const allowto=require("../middleware/allowto")
+const validate=require("../middleware/validation")
+const validation=require("../validation/assignment")
+Router.post("/create",verifytoken,allowto("Admin","Teacher"),validate(validation.createassignmentSchema),assignmentcontrolle.createassignment)
+Router.patch("/Update/:id",verifytoken,allowto("Admin","Teacher"),validate(validation.updateassignmentSchema,"body,params"),assignmentcontrolle.Updateassighnment)
+Router.get("/studentassignment/:id",verifytoken,allowto("Admin","Student"),validate(validation.getstudentassignmentSchema,"params"),assignmentcontrolle.getstudentassignment)
+Router.get("/:id",verifytoken,allowto("Admin","Teacher"),validate(validation.getsingleassignmentSchema,"params"),assignmentcontrolle.GetSingleAssignments)
+Router.get("/courceassignments/:id",verifytoken,allowto("Admin","Teacher"),validate(validation.GetCourseAssignmentsSchema,"params"),assignmentcontrolle.GetCourseAssignments)
+Router.delete("/:id",verifytoken,allowto("Admin","Teacher"),validate(validation.deleteassignmentSchema,"params"),assignmentcontrolle.deleteassighnment)
+
+module.exports= Router
